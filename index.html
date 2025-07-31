@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Studio-MaNA | An Architectural Design Firm</title>
+  <!-- Tailwind CSS CDN for basic styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+	<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MW4VJBEECF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MW4VJBEECF');
+</script>
+  <style>
+    /* Custom CSS for Parallax Effect */
+    body {
+      font-family: Segoe, 'Segoe UI', 'DejaVu Sans', 'Trebuchet MS', Verdana, 'sans-serif'sans-serif;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+      background-color: #FFFFFF;
+    }
+
+    .parallax-section {
+      height: auto; /* Full viewport height */
+      min-height: 75vh;
+      background-attachment: fixed; /* For image backgrounds */
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      position: relative; /* Needed for text positioning */
+      overflow: hidden; /* Ensures content doesn't spill */
+    }
+
+    /* Video Background Section */
+    .section-one {
+      position: relative;
+      overflow: hidden;
+      background-image: none !important;
+      min-height: 75vh;
+    }
+
+    .section-one .video-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 150%; /* taller for parallax effect */
+      object-fit: cover;
+      will-change: transform;
+      transform: translateY(0);
+      z-index: 0;
+      pointer-events: none;
+      transition: transform 0.1s ease-out;
+    }
+
+    .section-one .video-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 0.5;
+      pointer-events: none;
+    }
+
+    .section-one .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Specific background images for other sections */
+    .section-two {
+      background-image: url('images/team.jpg');
+    }
+
+    .section-three {
+      background-image: url('images/lolly-27-cropped.png');
+    }
+
+    .section-four {
+      background-image: url('images/daily-dose.jpg');
+    }
+
+    .content-section {
+      height: auto;
+      min-height: 10vh;
+      background-color: #ffffff;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 1rem;
+      margin: 2rem 0;
+      border-radius: 1rem;
+    }
+
+    .content-wrapper {
+      max-width: 800px;
+      text-align: center;
+    }
+
+    h1, h2 {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .parallax-section {
+        background-attachment: scroll; /* Disable fixed attachment on mobile for better performance */
+      }
+      .section-one .video-bg {
+        display: none; /* Disable video on mobile for performance */
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Hero Section -->
+<div class="parallax-section section-one">
+  <!-- Background Video -->
+  <video class="video-bg" autoplay muted loop playsinline>
+    <source src="images/img_1455 Video.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+  <!-- Optional dark overlay for readability -->
+  <div class="video-overlay"></div>
+
+  <!-- Foreground Content -->
+  <div class="block p-8 bg-black bg-opacity-0 rounded-2xl cursor-pointer flex flex-col items-center content">
+    <img src="images/MaNA.png" alt="Studio-MaNA Logo" class="w-64 md:w-[600px] lg:w-[800px] xl:w-[1000px] mb-4" />
+    <p class="text-xl md:text-2xl text-center italic">An Architectural Design Firm</p>
+  </div>
+</div>
+
+<!-- Content Section 1 -->
+<div class="content-section">
+  <div class="content-wrapper">
+    <h2 class="text-4xl font-regular mb-4 italic">"Anything distinguished from the ordinary is so because of the mana it possesses"</h2>
+    <p class="text-sm italic">
+      Britannica, The Editors of Encyclopedia
+    </p>
+  </div>
+</div>
+
+<!-- Parallax Section 2 -->
+<div class="parallax-section section-two">
+  <div class="p-8 bg-black bg-opacity-0 rounded-2xl">
+    <div class="max-w-[60%] mx-auto">
+      <h2 class="text-4xl md:text-9xl font-thin mb-4 text-center italic">About Us</h2>
+      <p class="text-xl md:text-2xl text-center">
+        MaNA is an Architectural Design firm, that operates out of Burlington, Ontario and is intent on designing spaces
+        that are imbued with a sense of place. MaNA draws inspiration in the cultural threads that tie, strengthen and
+        energize society into cohesive, well-woven communities. MaNA is a conglomerate of skilled Designers and Architects
+        who share the understanding that the role of Architecture is to be the platform on which life unfolds: that a
+        well-planned and designed environment, can support the development of an individual’s mental and physical well
+        being. MaNA is experienced in handling a wide range of projects including Residential, Commercial, Municipal 
+        and Institutional. 
+      </p>
+      <br />
+      <p class="text-xl md:text-2xl text-center">
+        The MaNA team have spent the better half their careers designing and implementing Architecture for firms across
+        the globe. Our experience working together to deliver successful projects under various organizations has proven
+        our competence and capability to break out and serve our communities with a keen understanding of global practices.
+        MaNA intends to work with each client to understanding their specific needs and ensure that we address them holistically,
+        sustainably and efficiently.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Parallax Section 3 -->
+<div class="parallax-section section-three">
+  <a href="projects.html">
+    <div class="p-8 bg-black bg-opacity-0 rounded-2xl">
+      <h2 class="text-4xl md:text-9xl font-thin mb-4 text-center italic">Projects</h2>
+      <p class="text-xl md:text-2xl text-center">&nbsp;</p>
+      <p class="text-xl md:text-2xl text-center">&nbsp;</p>
+    </div>
+  </a>
+</div>
+
+<!-- Parallax Section 4 -->
+<div class="parallax-section section-four text-white">
+  <div class="p-8 bg-black bg-opacity-0 rounded-2xl max-w-10xl mx-auto">
+    <h2 class="text-4xl md:text-9xl font-thin mb-2 text-center italic">Contact Us</h2>
+    <p class="text-lg text-center mb-8">Happy to Chat!</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-20 text-center">
+      <!-- Column 1: Open Hours -->
+      <div>
+        <h3 class="text-2xl font-bold mb-2">Open Hours</h3>
+        <br />
+        <p class="font-medium">
+          Mon – Fri: 9am – 7pm<br />
+          Evenings &amp; Weekends by<br />
+          Appointment
+        </p>
+      </div>
+
+      <!-- Column 2: Location -->
+      <div>
+        <h3 class="text-2xl font-bold mb-2">Location</h3>
+        <p>
+          <br />
+          Burlington,<br />
+          Ontario
+        </p>
+      </div>
+
+      <!-- Column 3: Contact -->
+      <div>
+        <h3 class="text-2xl font-bold mb-2">Contact</h3>
+        <br />
+        <p>(647) 881 2064</p>
+        <p><a href="mailto:info@studio-mana.ca" class="underline">info@studio-mana.ca</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const section = document.querySelector('.section-one');
+    if (!section) return;
+
+    const video = section.querySelector('.video-bg');
+    if (!video) return;
+
+    function parallaxScroll() {
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      if (rect.bottom > 0 && rect.top < windowHeight) {
+        const scrollPercent = rect.top / windowHeight;
+        const translateY = scrollPercent * 40;
+        video.style.transform = `translateY(${translateY}px)`;
+      }
+
+      requestAnimationFrame(parallaxScroll);
+    }
+
+    requestAnimationFrame(parallaxScroll);
+  })();
+</script>
+
+</body>
+</html>
