@@ -1,0 +1,19 @@
+Type: New build home
+Located in: automation test
+Approximately: 5 sqft
+Bedrooms: 1 bedroom
+Stories: Double story family room
+Offices: 2 Home Offices
+Bathrooms: 5.5 Baths, 2 Powder Rooms
+Laundry: 2 laundry rooms
+Gym: 1 Gym
+Theatre: 1 Home Theatre
+
+This is a rambled description incase one is necessary
+Hoc est domus nova — a fundamentis aedificata, in terra dicitur "automation test" sita, quantum scimus. Area tota? Circa quinque pedes quadratos (plus minusve), quod sufficit… ad aliquid. Num camerae sunt? Ita vero: una cubiculum somni. Et non desunt scalae — nam familia duplex-altitudinis spatium habet, quod resonat cum magnifico sensu vacui et luminis.
+
+Officia? Sunt duo. Nam quid est domus sine duplici spatio ad labores domesticos sive occupationes remotissimas? Balnea? Quinque integra et dimidia. Plus duae latrinae leves — utique ad usum hospitum, qui forte non manent sed tamen admirationem exspectant.
+
+Lavatio? Bis iteratur. Vestes enim lavandae sunt in diversis locis, ut decorum domesticum stabile maneat. Gymnasium? Unum. Corpus colitur, sicut et animus. Theatrum? Est. Pro spectaculis privatis — sive tragicis sive comicis — locus est paratus.
+
+In summa, haec est structura quae omnia promittit, etsi adhuc in fluctibus incertitudinis vagatur. Conceptus praeclarus, exspectatio magna, et spes ut tandem haec verba sensum aliquando habeant. Interim, hic textus serviet — quasi paries sine pictura, paratus ut pingatur.
