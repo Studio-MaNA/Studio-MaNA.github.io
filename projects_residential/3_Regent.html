@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated Gallery Layout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for navigation arrows and close icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            /* Updated font-family to match the home page for consistency */
+            font-family: Segoe, 'Segoe UI', 'DejaVu Sans', 'Trebuchet MS', Verdana, sans-serif;
+            background-color: #1a1a1a; /* Dark background for the body */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            box-sizing: border-box;
+            color: #e0e0e0; /* Default text color for dark mode */
+            position: relative; /* Needed for absolute positioning of nav-bar */
+        }
+
+        /* Main page layout using CSS Grid */
+        .page-wrapper {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Video Section - Adapted from your old code */
+        .video-section {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9; /* Maintain 16:9 aspect ratio */
+            overflow: hidden; /* Crucial for cropping the scaled video */
+            background-color: #282828; /* Fallback background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border-bottom-left-radius: 12px; /* Rounded corners */
+            border-bottom-right-radius: 12px; /* Rounded corners */
+        }
+
+        .video-section video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures video covers the area */
+            transform: scale(1.4); /* Significantly enlarge the video to crop top/bottom */
+            transition: transform 0.3s ease-in-out; /* Smooth transition for potential hover effects */
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .video-title {
+            font-size: 2.5rem; /* md:text-5xl equivalent */
+            font-weight: 700; /* font-bold equivalent */
+            margin-bottom: 0.5rem; /* mb-2 equivalent */
+            color: #fff;
+        }
+
+        .main-content-area {
+            display: grid;
+            grid-template-columns: 3fr 2fr; /* 3/5 for images, 2/5 for text */
+            gap: 40px; /* Increased gap for spacing between columns */
+            padding: 40px; /* Increased padding for side margins */
+            flex-grow: 1;
+        }
+
+        .image-gallery-section {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow: auto;
+            border: none;
+        }
+
+        .text-content-section {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            overflow-y: auto;
+            border: none;
+        }
+
+        /* Existing Grid Container Styles (adapted for new parent) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Increased base unit for columns (150px) */
+            grid-auto-rows: 200px; /* Increased base unit for rows (200px) */
+            gap: 10px; /* Added a small gap between grid items */
+            width: 100%;
+            max-width: 100%; /* Allow grid to take full width of its parent column */
+            border-radius: 8px; /* Added rounded corners to the grid container */
+            overflow: hidden;
+            box-shadow: none;
+            grid-auto-flow: dense;
+        }
+
+        .grid-item {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            border-radius: 8px; /* Rounded corners for individual grid items */
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease-in-out;
+            border-radius: 8px; /* Rounded corners for images within grid items */
+        }
+
+        .grid-item img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Grid item sizing based on naming convention */
+        /* These values are now relative to the new 150px column / 200px row base units */
+        .grid-item.default {
+            grid-column: span 2; /* 300px wide */
+            grid-row: span 2;    /* 400px tall */
+        }
+
+        .grid-item.wide {
+            grid-column: span 3; /* 450px wide */
+            grid-row: span 2;    /* 400px tall */
+        }
+
+        .grid-item.tall {
+            grid-column: span 2; /* 300px wide */
+            grid-row: span 3;    /* 600px tall */
+        }
+
+        .grid-item.large {
+            grid-column: span 4; /* 600px wide */
+            grid-row: span 4;    /* 800px tall */
+        }
+
+        /* Lightbox styles (adjusted for dark mode) */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+            border-radius: 12px; /* Increased rounded corners */
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px; /* Rounded corners for image inside lightbox */
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #fff;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 10px;
+            user-select: none;
+            transition: color 0.3s ease;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-nav:hover {
+            color: #eee;
+            background: rgba(255,255,255,0.4);
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        /* Text color adjustments for dark mode */
+        .text-content-section h2 {
+            color: #f0f0f0;
+            font-size: 1.8rem; /* Adjusted heading size */
+            margin-bottom: 1.2rem; /* Adjusted margin */
+            font-weight: 300; /* Added font-thin to h2 */
+            font-style: italic; /* Added italic to h2 */
+        }
+        .text-content-section p {
+            color: #c0c0c0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+            font-style: italic; /* Added italic */
+            font-weight: 300; /* Added font-thin */
+        }
+        .text-content-section ul {
+            list-style: disc; /* Bullet points */
+            margin-left: 20px; /* Indent list */
+            color: #c0c0c0;
+        }
+        .text-content-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+            font-style: italic; /* Added italic */
+            font-weight: 300; /* Added font-thin */
+        }
+        .text-content-section li span.font-medium { /* For bolding in list items */
+            font-weight: 600;
+            color: #e0e0e0;
+            font-style: normal; /* Override italic for bolded part */
+        }
+
+        /* Nav-bar styles */
+        .nav-bar-icon {
+            position: absolute;
+            top: 20px; /* Position from top */
+            right: 20px; /* Position from right */
+            left: auto; /* Ensure it's not left-positioned */
+            z-index: 999; /* Below lightbox, above video */
+            cursor: pointer;
+            color: #fff; /* Fallback color for text, if any */
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px; /* Rounded corners */
+            padding: 15px 25px; /* Increased padding to accommodate larger logo */
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-bar-icon:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .nav-bar-icon img {
+            width: 200px; /* Significantly larger width */
+            height: auto; /* Maintain aspect ratio */
+            object-fit: contain; /* Ensures logo fits without cropping */
+            display: block;
+        }
+
+        /* Responsive adjustments for the overall layout */
+        @media (max-width: 768px) {
+            .main-content-area {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 15px; /* Adjusted padding for mobile */
+            }
+            .video-section {
+                height: 250px; /* Adjusted video height for mobile */
+                border-radius: 0; /* Remove rounded corners on small screens for full width */
+            }
+            .video-title {
+                font-size: 2rem;
+            }
+            .grid-container {
+                max-width: 100%;
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Adjusted base unit for smaller screens */
+                grid-auto-rows: 100px; /* Adjusted row height for smaller screens */
+            }
+            .grid-item.default {
+                grid-column: span 3;
+                grid-row: span 2;
+            }
+            .grid-item.wide {
+                grid-column: span 4;
+                grid-row: span 2;
+            }
+            .grid-item.tall {
+                grid-column: span 2;
+                grid-row: span 3;
+            }
+            .grid-item.large {
+                grid-column: span 5;
+                grid-row: span 4;
+            }
+            .lightbox-nav {
+                font-size: 30px;
+                width: 40px;
+                height: 40px;
+            }
+            .lightbox-prev {
+                left: 10px;
+            }
+            .lightbox-next {
+                right: 10px;
+            }
+            .lightbox-close {
+                font-size: 24px;
+                width: 35px;
+                height: 35px;
+                top: 5px;
+                right: 10px;
+            }
+            .nav-bar-icon {
+                font-size: 24px; /* Still relevant if Font Awesome is fallback */
+                padding: 10px 15px; /* Adjusted padding for mobile */
+                top: 10px;
+                right: 10px; /* Adjusted for mobile */
+                left: auto;
+                border-radius: 8px; /* Smaller rounded corners for mobile */
+            }
+            .nav-bar-icon img {
+                width: 60px; /* Smaller size for mobile */
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        
+        <div class="video-section">
+            <video autoplay loop muted playsinline>
+                <source src="./3_Regent/pointing_black.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay">
+                <h1 class="video-title">Regent</h1>
+            </div>
+        </div>
+    
+        </div>
+
+        <!-- Main Content Area: Image Gallery (3/5) and Text (2/5) -->
+        <div class="main-content-area">
+            <!-- Image Gallery Section -->
+            <div class="image-gallery-section">
+                <div class="grid-container" id="imageGrid">
+                    
+                    <div class="grid-item default" data-original-src="./3_Regent/ISO NE 1.jpg">
+                        <img src="./3_Regent/ISO NE 1.jpg" alt="ISO NE 1.jpg" onerror="this.onerror=null;this.src='https://placehold.co/300x400/AAAAAA/FFFFFF?text=Error';">
+                    </div>
+                    <div class="grid-item wide" data-original-src="./3_Regent/ISO SE 1.jpg">
+                        <img src="./3_Regent/ISO SE 1.jpg" alt="ISO SE 1.jpg" onerror="this.onerror=null;this.src='https://placehold.co/300x400/AAAAAA/FFFFFF?text=Error';">
+                    </div>
+                    <div class="grid-item tall" data-original-src="./3_Regent/front view.png">
+                        <img src="./3_Regent/front view.png" alt="front view.png" onerror="this.onerror=null;this.src='https://placehold.co/300x400/AAAAAA/FFFFFF?text=Error';">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Content Section -->
+            <div class="text-content-section">
+                
+                <h2>About Regent</h2>
+                <p>This is placeholder text for 94 Regent</p><p>Location: In a city</p><p>"description goes here" Here is a latin description to fill space</p><p>94 Regent est proprietas aliquo in corde urbis sita — vel fortasse paulo extra viam tritam — secundum modum quo spectas. Est unus ex illis locis qui tranquille sedent, non clamat pro attentione, sed tamen satis eminet ut animadvertatur. Aedificium ipsum — bene, ibi est — solidum, praesens, fortasse aliquantulum vetustum, vel nuper renovatum — nondum plane scimus. Fortasse lateres. Vel vitrum. Vel utrumque. Ianuam probabiliter habet. Et fenestras. Etiam viridarium aliquod in progressu esse potest — aut in consilio saltem — pro ratione pecuniaria et approbationibus finalibus.</p><p>Intus? Spatia sunt. Area quadrata quoque, sane, cum conclavibus ad aliquem usum destinatis, quamquam quidnam sint, nondum definitum est. Potest esse habitatio, negotium, aut ingeniosa mixtura utriusque. Potentia est — magna potentia. Potentia ad designandum, evolvendum, renovandum, transformandum… quidquid vis.</p><p>Forsitan gratia. Forsitan rusticitas. Vel fortasse est unus ex illis inceptis quae formam suam invenient cum musa adfuerit. Potest esse magnificum. Vel humile et sensatum. Quocumque modo, 94 Regent est tabula in fieri. Quasi charta non omnino vacua, sed in expectatione contextus, claritatis, et propositi. Est certe aliquid — et mox erit aliquid maius. Interim, hic textus sufficiet.</p>
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- Nav-bar placeholder (positioned absolutely relative to body) -->
+    <div class="nav-bar-icon">
+        <a href="../../home.html">
+            <img src="https://placehold.co/200x60/000000/FFFFFF?text=MaNA+Logo" alt="MaNA Logo" onerror="this.onerror=null;this.src='https://placehold.co/200x60/AAAAAA/FFFFFF?text=Error';">
+        </a>
+    </div>
+
+    <!-- Lightbox HTML Structure (remains outside main layout for fixed positioning) -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <span class="lightbox-nav lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></span>
+        <div class="lightbox-content">
+            <img src="" alt="Lightbox Image" id="lightboxImage">
+        </div>
+        <span class="lightbox-nav lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gridItems = document.querySelectorAll('.grid-item');
+            const lightboxOverlay = document.getElementById('lightboxOverlay');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxPrev = document.getElementById('lightboxPrev');
+            const lightboxNext = document.getElementById('lightboxNext');
+            let currentImageIndex = 0;
+            const images = []; // Store image data for navigation
+
+            // Populate the images array and add click listeners
+            gridItems.forEach((item, index) => {
+                const imgElement = item.querySelector('img');
+                // Use data-original-src if provided, otherwise fallback to img src
+                const originalSrc = item.dataset.originalSrc || imgElement.src;
+                images.push(originalSrc);
+
+                item.addEventListener('click', () => {
+                    currentImageIndex = index;
+                    showLightbox(originalSrc);
+                });
+            });
+
+            // Function to show the lightbox
+            function showLightbox(src) {
+                lightboxImage.src = src;
+                lightboxOverlay.style.display = 'flex'; // Show the overlay
+            }
+
+            // Function to hide the lightbox
+            function hideLightbox() {
+                lightboxOverlay.style.display = 'none'; // Hide the overlay
+            }
+
+            // Function to navigate to the previous image
+            function showPrevImage() {
+                currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+                lightboxImage.src = images[currentImageIndex];
+            }
+
+            // Function to navigate to the next image
+            function showNextImage() {
+                currentImageIndex = (currentImageIndex + 1) % images.length;
+                lightboxImage.src = images[currentImageIndex];
+            }
+
+            // Event listeners for lightbox controls
+            lightboxClose.addEventListener('click', hideLightbox);
+            lightboxPrev.addEventListener('click', showPrevImage);
+            lightboxNext.addEventListener('click', showNextImage);
+
+            // Close lightbox when clicking outside the image content
+            lightboxOverlay.addEventListener('click', (event) => {
+                if (event.target === lightboxOverlay) {
+                    hideLightbox();
+                }
+            });
+
+            // Keyboard navigation (optional, but good for accessibility)
+            document.addEventListener('keydown', (event) => {
+                if (lightboxOverlay.style.display === 'flex') {
+                    if (event.key === 'ArrowLeft') {
+                        showPrevImage();
+                    } else if (event.key === 'ArrowRight') {
+                        showNextImage();
+                    } else if (event.key === 'Escape') {
+                        hideLightbox();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
